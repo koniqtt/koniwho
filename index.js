@@ -19,8 +19,8 @@ client.on('ready', () => {
         '\x1b[36m[ INFO ]\x1b[0m',
         `\x1b[34mPing: ${client.ws.ping} ms \x1b[0m`
     );
-    updateStatus(); // Calling updateStatus here
-    setInterval(updateStatus, 10000); // Update status every 10 seconds
+    updateStatus();
+    setInterval(updateStatus, 10000); 
 });
 
 client.on('messageCreate', (message) => {
@@ -32,9 +32,9 @@ client.on('messageCreate', (message) => {
     userMessageData.count += 1;
 
     if (userMessageData.count >= 5) {
-        message.channel.send(`WAG SPAM KUPAL KABA BOSS ${message.author}?!`);
+        message.channel.send(`TANGINA MO WAG KA SPAM ${message.author}!`);
         userMessageData.count = 0;
-        clearTimeout(userMessageData.timer); // Clear previous timeout
+        clearTimeout(userMessageData.timer); 
     }
 
     if (!userMessageData.timer) {
@@ -91,25 +91,25 @@ app.listen(port, () => {
 async function setActivity() {
     const time = formatTime();
     client.user.setActivity({
-        name: `Saito [${time}]`,
-        type: ActivityType.Watching,
-        url: 'https://www.tiktok.com/@javinarjj',
+        name: `My Self [${time}]`,
+        type: ActivityType.Playing,
+        url: '#',
         assets: {
-            largeImage: 'https://media1.tenor.com/m/EuRL4e1BvGUAAAAC/malupiton-bossing-boss-dila.gif',
-            largeText: 'Kupal ka BOSS',
-            smallImage: 'https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/e3eea550621f1ff34d3ae1f71c9f4e8b~c5_1080x1080.jpeg',
-            smallText: '_sythoo',
+            largeImage: '#',
+            largeText: '#',
+            smallImage: '#',
+            smallText: '#',
         },
         buttons: [
-            { label: 'Server', url: 'https://discord.gg/zyjnMDyy' },
+            { label: 'Server', url: '#' },
         ]
     });
     client.user.setPresence({ status: 'dnd' });
 }
 
 function updateStatus() {
-    client.user.setActivity('Saito', {
-        type: ActivityType.Watching,
+    client.user.setActivity('My Self', {
+        type: ActivityType.Playing,
     });
     client.user.setPresence({ status: 'dnd' });
 }
