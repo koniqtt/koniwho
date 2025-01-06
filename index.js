@@ -122,7 +122,7 @@ client.on('interactionCreate', async (interaction) => {
         await interaction.reply({
             content: `**Order Status**\n` +
                      `┗﹕${userMention} | <#${channel.id}>\n` + 
-                     `・Item: ${item}\n` +
+                     `・${item}\n` +
                      `・₱${price}\n` +
                      `・${payment}\n`
         });
