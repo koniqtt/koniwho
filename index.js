@@ -1,28 +1,32 @@
-const { Client, GatewayIntentBits, ActivityType, MessageActionRow, MessageButton } = require('discord.js');
-require('dotenv').config();
+const { Client, GatewayIntentBits, ActivityType, MessageActionRow, MessageButton, SlashCommandBuilder, Routes } = require('discord.js');
+const { REST } = require('@discordjs/rest');
 const express = require('express');
 const path = require('path');
+require('dotenv').config();
 
+const { token, clientId, guildId } = require('./config.json'); // Assuming you have a config.json file for token and other values
+
+// Initialize the bot client
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMembers
     ],
 });
 
 const messageCounts = new Map();
 
+// Handle the bot's ready event
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    console.log(
-        '\x1b[36m[ INFO ]\x1b[0m',
-        `\x1b[34mPing: ${client.ws.ping} ms \x1b[0m`
-    );
+    console.log('\x1b[36m[ INFO ]\x1b[0m', `\x1b[34mPing: ${client.ws.ping} ms \x1b[0m`);
     updateStatus();
-    setInterval(updateStatus, 10000); 
+    setInterval(updateStatus, 10000); // Update status every 10 seconds
 });
 
+// Handle incoming messages for spam detection and buttons
 client.on('messageCreate', (message) => {
     if (message.author.bot) return;
 
@@ -34,20 +38,19 @@ client.on('messageCreate', (message) => {
     if (userMessageData.count >= 5) {
         message.channel.send(`TANGINA MO WAG KA SPAM ${message.author}!`);
         userMessageData.count = 0;
-        clearTimeout(userMessageData.timer); 
+        clearTimeout(userMessageData.timer); // Reset the timer if the user reaches the message limit
     }
 
     if (!userMessageData.timer) {
         userMessageData.timer = setTimeout(() => {
             messageCounts.delete(userId);
-        }, 10000);
+        }, 10000); // Reset count after 10 seconds
     }
 
     messageCounts.set(userId, userMessageData);
 
-    // Example button usage when a user sends a message
+    // Handle !button command to send a button
     if (message.content === '!button') {
-        // Create a row of buttons
         const row = new MessageActionRow().addComponents(
             new MessageButton()
                 .setCustomId('primary_button')
@@ -55,7 +58,6 @@ client.on('messageCreate', (message) => {
                 .setStyle('PRIMARY')
         );
 
-        // Send a message with the button
         message.channel.send({
             content: 'Here is your button!',
             components: [row],
@@ -63,7 +65,7 @@ client.on('messageCreate', (message) => {
     }
 });
 
-// Handle button interaction
+// Handle button interactions
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isButton()) return;
 
@@ -72,6 +74,77 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
+// Slash command registration
+const commands = [
+    new SlashCommandBuilder()
+        .setName('order')
+        .setDescription('Place an order with a user, item, price, payment method, and a channel')
+        .addUserOption(option => option.setName('user').setDescription('Mention the user').setRequired(true))
+        .addStringOption(option =>
+            option.setName('item')
+                .setDescription('Enter an item')
+                .setRequired(true)
+        )
+        .addStringOption(option =>
+            option.setName('price')
+                .setDescription('Enter a price')
+                .setRequired(true)
+        )
+        .addStringOption(option =>
+            option.setName('payment')
+                .setDescription('Enter a payment method')
+                .setRequired(true)
+        )
+        .addChannelOption(option =>
+            option.setName('channel')
+                .setDescription('Select the channel for the order')
+                .setRequired(true)
+        ),
+];
+
+const rest = new REST({ version: '10' }).setToken(token);
+
+(async () => {
+    try {
+        console.log('Refreshing application (/) commands...');
+        await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
+        console.log('Successfully reloaded application (/) commands.');
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+// Handle slash command interactions
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand()) return;
+
+    if (interaction.commandName === 'order') {
+        const userMention = interaction.options.getUser('user');
+        const item = interaction.options.getString('item');
+        const price = interaction.options.getString('price');
+        const payment = interaction.options.getString('payment');
+        const channel = interaction.options.getChannel('channel');
+
+        await interaction.reply({
+            content: `**Order Status**\n` +
+                     `┗﹕${userMention} | <#${channel.id}>\n` +  // Use channel.id for mentioning the channel
+                     `・Item: ${item}\n` +
+                     `・₱${price}\n` +
+                     `・${payment}\n`
+        });
+
+    }
+});
+
+// Activity and presence updates
+function updateStatus() {
+    client.user.setActivity('My Self', {
+        type: ActivityType.Playing,
+    });
+    client.user.setPresence({ status: 'dnd' });
+}
+
+// Express server setup to serve an HTML file
 const app = express();
 const port = 3000;
 
@@ -87,43 +160,6 @@ app.listen(port, () => {
     );
 });
 
-// Status messages
-async function setActivity() {
-    const time = formatTime();
-    client.user.setActivity({
-        name: `My Self [${time}]`,
-        type: ActivityType.Playing,
-        url: '#',
-        assets: {
-            largeImage: '#',
-            largeText: '#',
-            smallImage: '#',
-            smallText: '#',
-        },
-        buttons: [
-            { label: 'Server', url: '#' },
-        ]
-    });
-    client.user.setPresence({ status: 'dnd' });
-}
-
-function updateStatus() {
-    client.user.setActivity('My Self', {
-        type: ActivityType.Playing,
-    });
-    client.user.setPresence({ status: 'dnd' });
-}
-
-function formatTime() {
-    const date = new Date();
-    const options = {
-        timeZone: 'Asia/Manila',
-        hour12: true,
-        hour: 'numeric',
-        minute: 'numeric'
-    };
-    return new Intl.DateTimeFormat('en-US', options).format(date);
-}
-
+// Login the bot with the token
 const mySecret = process.env['TOKEN'];
 client.login(mySecret);
