@@ -89,8 +89,9 @@ client.on('interactionCreate', async (interaction) => {
             .setColor('#ffcc00')
             .setTitle('Borat n Makonat')
             .setDescription('Very nice!')
-            .setImage('https://your-image-url.com') 
-            .setFooter('Borat says: "Great Success!"');
+            .setImage('https://your-image-url.com')
+            .setFooter({ text: 'Borat says: "Great Success!"' }); 
+
 
         await interaction.reply({ embeds: [embed] });
     }
