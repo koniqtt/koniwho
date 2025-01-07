@@ -89,7 +89,7 @@ client.on('interactionCreate', async (interaction) => {
             .setColor('#ffcc00')
             .setTitle('Borat n Makonat')
             .setDescription('Very nice!')
-            .setImage('https://your-image-url.com')
+            .setImage('https://media.discordapp.net/attachments/1325865342832087064/1326071285079478324/a_ef4db479e269fd53441abfa04c31ef07.gif?ex=677e179f&is=677cc61f&hm=a2a8c5429c27c6c68c3a12b5b52377fd3949a9928bbc81096430b9fa7bd23686&')
             .setFooter({ text: 'Borat says: "Great Success!"' }); 
 
 
