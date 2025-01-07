@@ -27,7 +27,7 @@ client.on('ready', () => {
 client.on('messageCreate', (message) => {
     if (message.author.bot) return;
 
-    console.log(`[borat](<https://youtu.be/dQw4w9WgXcQ?si=NHripavotloXdc2->)`);
+    console.log(`Message received: ${message.content} from ${message.author.tag}`);
 
     const userId = message.author.id;
     const userMessageData = messageCounts.get(userId) || { count: 0, timer: null };
@@ -84,6 +84,7 @@ client.on('interactionCreate', async (interaction) => {
             `          <:emoji_13:1326029730121515008> ${item}\n` +
             `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n`
         });
+        await interaction.reply({ content: '[borat](<https://youtu.be/dQw4w9WgXcQ?si=NHripavotloXdc2->)', ephemeral: true });
     }
 });
 
