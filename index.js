@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 require('dotenv').config();
 
-const { token, clientId, guildId } = require('./config.json'); 
+const { token, clientId, guildId, Output_channel } = require('./config.json'); 
 
 const client = new Client({
     intents: [
@@ -117,15 +117,19 @@ client.on('interactionCreate', async (interaction) => {
         const item = interaction.options.getString('item');
         const price = interaction.options.getString('price');
         const payment = interaction.options.getString('payment');
-        const channel = interaction.options.getChannel('channel');
 
-        await interaction.reply({
+        const channel = await client.channels.fetch(Output_channel);
+        if (!channel) {
+            await interaction.reply({content: 'Failed', ephemeral: true});
+            return;
+        }
+
+        await channel.send({
             content: `>>> ## <a:emoji_20:1326030204531114095> ORDER STATUS\n` +
-                     `     <a:emoji_27:1326031618036727809> : ${userMention} | <#${channel.id}>\n` + 
-                     `          <:emoji_13:1326029730121515008> ${item}\n` +
-                     `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n` +
-        });
-
+            `     <a:emoji_27:1326031618036727809> : ${userMention} | <#${channel.id}>\n` + 
+            `          <:emoji_13:1326029730121515008> ${item}\n` +
+            `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n`
+        });      
     }
 });
 
