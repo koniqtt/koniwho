@@ -41,7 +41,7 @@ client.on('messageCreate', (message) => {
     if (!userMessageData.timer) {
         userMessageData.timer = setTimeout(() => {
             messageCounts.delete(userId);
-        }, 4000); // Increased the timeout to 4000 ms (4 seconds)
+        }, 5000); 
     }
 
     messageCounts.set(userId, userMessageData);
@@ -83,7 +83,7 @@ client.on('interactionCreate', async (interaction) => {
             `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n`
         });
     } else {
-        // Silently ignore unknown commands or interactions
+       
     }
 });
 
