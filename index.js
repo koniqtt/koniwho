@@ -86,11 +86,11 @@ client.on('interactionCreate', async (interaction) => {
         });
 
         const embed = new EmbedBuilder()
-            .setColor('#ffcc00')
+            .setColor('#000000')
             .setTitle('Borat n Makonat')
             .setDescription('Very nice!')
             .setImage('https://raw.githubusercontent.com/koniqtt/koniwho/refs/heads/main/koni.gif')
-            .setFooter({ text: 'Borat says: "Great Success!"' }); 
+            .setFooter({ text: 'Namo koni' }); 
 
 
         await interaction.reply({ embeds: [embed] });
