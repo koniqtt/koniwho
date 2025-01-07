@@ -24,7 +24,6 @@ client.on('ready', () => {
     setInterval(updateStatus, 10000); 
 });
 
-
 client.on('messageCreate', (message) => {
     if (message.author.bot) return;
 
@@ -42,7 +41,7 @@ client.on('messageCreate', (message) => {
     if (!userMessageData.timer) {
         userMessageData.timer = setTimeout(() => {
             messageCounts.delete(userId);
-        }, 4); 
+        }, 4000); // Increased the timeout to 4000 ms (4 seconds)
     }
 
     messageCounts.set(userId, userMessageData);
@@ -63,10 +62,28 @@ client.on('messageCreate', (message) => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isButton()) return;
-
-    if (interaction.customId === 'primary_button') {
+    if (interaction.isButton() && interaction.customId === 'primary_button') {
         await interaction.reply({ content: 'You clicked the button!', ephemeral: true });
+    } else if (interaction.isCommand() && interaction.commandName === 'order') {
+        const userMention = interaction.options.getUser('user');
+        const item = interaction.options.getString('item');
+        const price = interaction.options.getString('price');
+        const payment = interaction.options.getString('payment');
+
+        const channel = await client.channels.fetch(Output_channel);
+        if (!channel) {
+            await interaction.reply({ content: 'Failed', ephemeral: true });
+            return;
+        }
+
+        await channel.send({
+            content: `>>> ## <a:emoji_20:1326030204531114095> ORDER STATUS\n` +
+            `     <a:emoji_27:1326031618036727809> : ${userMention} | <#${channel.id}>\n` + 
+            `          <:emoji_13:1326029730121515008> ${item}\n` +
+            `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n`
+        });
+    } else {
+        // Silently ignore unknown commands or interactions
     }
 });
 
@@ -106,30 +123,6 @@ const rest = new REST({ version: '10' }).setToken(token);
         console.log('Successfully reloaded application (/) commands.');
     } catch (error) {
         console.error(error);
-    }
-});
-
-client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) return;
-
-    if (interaction.commandName === 'order') {
-        const userMention = interaction.options.getUser('user');
-        const item = interaction.options.getString('item');
-        const price = interaction.options.getString('price');
-        const payment = interaction.options.getString('payment');
-
-        const channel = await client.channels.fetch(Output_channel);
-        if (!channel) {
-            await interaction.reply({content: 'Failed', ephemeral: true});
-            return;
-        }
-
-        await channel.send({
-            content: `>>> ## <a:emoji_20:1326030204531114095> ORDER STATUS\n` +
-            `     <a:emoji_27:1326031618036727809> : ${userMention} | <#${channel.id}>\n` + 
-            `          <:emoji_13:1326029730121515008> ${item}\n` +
-            `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n`
-        });      
     }
 });
 
