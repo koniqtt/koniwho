@@ -120,11 +120,10 @@ client.on('interactionCreate', async (interaction) => {
         const channel = interaction.options.getChannel('channel');
 
         await interaction.reply({
-            content: `**Order Status**\n` +
-                     `┗﹕${userMention} | <#${channel.id}>\n` + 
-                     `・${item}\n` +
-                     `・₱${price}\n` +
-                     `・${payment}\n`
+            content: `>>> ## <a:emoji_20:1326030204531114095> ORDER STATUS\n` +
+                     `     <a:emoji_27:1326031618036727809> : ${userMention} | <#${channel.id}>\n` + 
+                     `          <:emoji_13:1326029730121515008> ${item}\n` +
+                     `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n` +
         });
 
     }
