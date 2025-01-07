@@ -27,6 +27,8 @@ client.on('ready', () => {
 client.on('messageCreate', (message) => {
     if (message.author.bot) return;
 
+    console.log(`Message received: ${message.content} from ${message.author.tag}`);
+
     const userId = message.author.id;
     const userMessageData = messageCounts.get(userId) || { count: 0, timer: null };
 
@@ -82,8 +84,6 @@ client.on('interactionCreate', async (interaction) => {
             `          <:emoji_13:1326029730121515008> ${item}\n` +
             `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n`
         });
-    } else {
-       
     }
 });
 
@@ -118,8 +118,12 @@ const rest = new REST({ version: '10' }).setToken(token);
 
 (async () => {
     try {
-        console.log('Refreshing application (/) commands...');
+        console.log('Clearing old commands...');
+        await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] });
+        
+        console.log('Registering new commands...');
         await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
+
         console.log('Successfully reloaded application (/) commands.');
     } catch (error) {
         console.error(error);
