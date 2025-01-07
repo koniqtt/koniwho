@@ -89,7 +89,7 @@ client.on('interactionCreate', async (interaction) => {
             .setColor('#ffcc00')
             .setTitle('Borat n Makonat')
             .setDescription('Very nice!')
-            .setImage('koni.gif')
+            .setImage('https://github.com/koniqtt/koniwho/blob/main/koni.gif')
             .setFooter({ text: 'Borat says: "Great Success!"' }); 
 
 
