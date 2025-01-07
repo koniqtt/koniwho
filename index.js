@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, ActivityType, MessageActionRow, MessageButton, SlashCommandBuilder, Routes } = require('discord.js');
+const { Client, GatewayIntentBits, ActivityType, MessageActionRow, MessageButton, SlashCommandBuilder, Routes, MessageEmbed  } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const express = require('express');
 const path = require('path');
