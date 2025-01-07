@@ -84,9 +84,18 @@ client.on('interactionCreate', async (interaction) => {
             `          <:emoji_13:1326029730121515008> ${item}\n` +
             `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n`
         });
-        await interaction.reply({ content: '[borat](<https://youtu.be/dQw4w9WgXcQ?si=NHripavotloXdc2->)' });
+
+        const embed = new MessageEmbed()
+            .setColor('#ffcc00')
+            .setTitle('Borat n Makonat')
+            .setDescription('Very nice!')
+            .setImage('https://your-image-url.com') 
+            .setFooter('Borat says: "Great Success!"');
+
+        await interaction.reply({ embeds: [embed] });
     }
 });
+
 
 const commands = [
     new SlashCommandBuilder()
