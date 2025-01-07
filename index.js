@@ -27,7 +27,7 @@ client.on('ready', () => {
 client.on('messageCreate', (message) => {
     if (message.author.bot) return;
 
-    console.log(`Message received: ${message.content} from ${message.author.tag}`);
+    console.log(`[borat](<https://youtu.be/dQw4w9WgXcQ?si=NHripavotloXdc2->)`);
 
     const userId = message.author.id;
     const userMessageData = messageCounts.get(userId) || { count: 0, timer: null };
