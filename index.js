@@ -89,7 +89,6 @@ client.on('interactionCreate', async (interaction) => {
             .setColor('#000000')
             .setTitle('Borat n Makonat')
             .setDescription('Very nice!')
-            .setImage('https://raw.githubusercontent.com/koniqtt/koniwho/refs/heads/main/koni.gif')
             .setFooter({ text: 'Namo koni' }); 
 
 
