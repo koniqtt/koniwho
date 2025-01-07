@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, ActivityType, MessageActionRow, MessageButton, SlashCommandBuilder, Routes, MessageEmbed  } = require('discord.js');
+const { Client, GatewayIntentBits, ActivityType, MessageActionRow, MessageButton, SlashCommandBuilder, Routes, EmbedBuilder   } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const express = require('express');
 const path = require('path');
@@ -85,7 +85,7 @@ client.on('interactionCreate', async (interaction) => {
             `          <:emoji_13:1326029730121515008> ₱${price} | ${payment}\n`
         });
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor('#ffcc00')
             .setTitle('Borat n Makonat')
             .setDescription('Very nice!')
