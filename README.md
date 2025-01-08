@@ -35,10 +35,9 @@
     margin: 20px auto;
     display: inline-block;
   ">
-  BOTGHOST STATUS REMOVER AND SPAM RESPONSE 
+  24/7 Bot
   <br>
   <span style="font-size: 1.2em; color: #ffeb3b;">
-    "WAG SPAM KUPAL KABA BOSS {user}?!"
   </span>
 </h1>
 
@@ -69,9 +68,6 @@ Hit Deploy, and watch your project come to life!
 
 🖋 Created by
 Saito (@_sythoo)
-
-This guide will help you get started with hosting your web projects in no time! 🚀
-Join our Discord community for any questions or collaboration opportunities.
 
 
 <!--
